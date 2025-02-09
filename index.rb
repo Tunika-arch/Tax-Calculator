@@ -17,7 +17,7 @@ EU_COUNTRIES = [
   "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"
 ]
 
-# creating a tasx calculator class
+# creating a tax calculator class
 class TaxCalculator
   # defining the attributes the class object should accpet as inputs
   attr_accessor :buyer_location, :product_type, :buyer_type, :service_location
@@ -77,3 +77,31 @@ class TaxCalculator
       "No VAT"
     end
   end
+
+
+  # the case the service type and service is onsite service, check the persons location, if it's spain return spanish VAT else return local VAT of that location
+  def onsite_service(service_location)
+    service_location == "Spain" ? SPANISH_VAT : "Local VAT (#{service_location})"
+  end
+end
+
+
+  
+# test
+
+# a buyer from Spain, buying a good and an individual
+tax1 = TaxCalculator.new("Spain", "good", "individual").calculate_tax
+
+# a buyer from Germany, looking for a service, the buyer is a comapny looking for an onsite service
+tax2 = TaxCalculator.new("Germany", "service", "company", "London").calculate_tax
+
+# a buyer from USA looking for a service, he's an individual looking for a digital service
+tax3 = TaxCalculator.new("USA", "service", "individual").calculate_tax
+
+# a buyer from Canada buying a good, he's an individual
+tax4 = TaxCalculator.new("Canada", "good", "individual").calculate_tax
+
+puts tax1 # Output: 21
+puts tax2 # Output: "Local VAT (London)"
+puts tax3 # Output: "No VAT"
+puts tax4 # Output: "Export (No VAT)"
